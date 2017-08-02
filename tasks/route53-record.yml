@@ -1,8 +1,8 @@
 ---
 - name: Create DNS Zone
   route53_zone:
-    aws_access_key: "{{ AWS_ACCESS_KEY }}"
-    aws_secret_key: "{{ AWS_SECRET_KEY }}"
+    aws_access_key: "{{ AWS_ACCESS_KEY | default(omit) }}"
+    aws_secret_key: "{{ AWS_SECRET_KEY | default(omit) }}"
     zone: "{{ cloud_dns_zone }}"
     state: present
   tags:
@@ -10,8 +10,8 @@
 
 - name: Add instance DNS record
   route53:
-    aws_access_key: "{{ AWS_ACCESS_KEY }}"
-    aws_secret_key: "{{ AWS_SECRET_KEY }}"
+    aws_access_key: "{{ AWS_ACCESS_KEY | default(omit) }}"
+    aws_secret_key: "{{ AWS_SECRET_KEY | default(omit) }}"
     command: "{{ cloud_dns_record_command | default('create') }}"
     overwrite: yes
     zone: "{{ cloud_dns_zone }}"
