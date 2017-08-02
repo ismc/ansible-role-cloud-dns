@@ -1,0 +1,24 @@
+---
+- name: Create DNS Zone
+  route53_zone:
+    aws_access_key: "{{ AWS_ACCESS_KEY }}"
+    aws_secret_key: "{{ AWS_SECRET_KEY }}"
+    zone: "{{ cloud_dns_zone }}"
+    state: present
+  tags:
+    - cloud_dns
+
+- name: Add instance DNS record
+  route53:
+    aws_access_key: "{{ AWS_ACCESS_KEY }}"
+    aws_secret_key: "{{ AWS_SECRET_KEY }}"
+    command: "{{ cloud_dns_record_command | default('create') }}"
+    overwrite: yes
+    zone: "{{ cloud_dns_zone }}"
+    record: "{{ cloud_dns_record }}"
+    type: "{{ cloud_dns_record_type | default('A') }}"
+    value: "{{ cloud_dns_record_value }}"
+    ttl: "{{ cloud_dns_record_type | default('60') }}"
+    wait: yes
+  tags:
+    - cloud_dns
